@@ -1,0 +1,26 @@
+title: WMI Spawns PowerShell
+id: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+status: development
+description: |
+    Detects WMI executing as WMIC from PowerShell. This is often a sign of execution, lateral movement, and discovery by executing commands on remote machines.
+references:
+    - https://medium.com/detect-fyi/wmi-as-a-cyber-threat-9207e80ca54d
+author: Logan Flecke
+date: 2025-05-07
+modified: 2025-05-07
+tags:
+    - attack.execution
+    - attack.s0476
+    - attack.t1047
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        CommandLine|contains: 
+              - 'process call create'
+              - 'wmic.exe'
+    condition: selection
+falsepositives:
+    - Unlikely
+level: high

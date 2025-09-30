@@ -5,10 +5,10 @@ from pathlib import Path
 import os
 
 service = connect(
-    host="172.18.1.20",
-    port="8089",
-    username="logan",
-    password="krigsgaldr" # war sorcerer
+    host="192.168.1.1", # Splunk IP
+    port="8089", # Splunk management port
+    username="username", # user name with admin privileges to create/modify rules
+    password="password"
 )
 
 for file_path in Path("converted_rules").rglob("*"):

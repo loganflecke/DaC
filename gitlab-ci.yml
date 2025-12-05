@@ -4,27 +4,25 @@ stages:
 
 convert-rules:
   stage: convert
-  image: python:3.10
+  image: python:3.13
   before_script:
     - echo "Converting sigma rules into Splunk..."
     - pip install --upgrade pip
-    - pip install sigma-cli
+    - pip install sigma-cli Jinja2 GitPython
     - sigma plugin install splunk
   script:
     - mkdir -p ./converted_rules
-    - |
-      for rule in ./rules/windows/*.yml; do
-        filename=$(basename "$rule" .yml).spl
-        out_file="./converted_rules/$filename"
-        sigma convert -t splunk -p splunk_windows "$rule" -o "$out_file"
-      done
+    - python3 ./scripts/convert_to_splunk_alert.py
+    - ls
+    - ls converted_rules
   artifacts:
     paths:
       - converted_rules/
+      - savedsearches.json
 
 deploy-rules:
     stage: deploy
-    image: python:3.10
+    image: python:3.13
     dependencies: 
         - convert-rules
     before_script:
@@ -32,5 +30,5 @@ deploy-rules:
         - pip install --upgrade pip
         - pip install splunk-sdk
     script:
-        - ls converted_rules
-        - python3 deploy_to_splunk.py
+        - cat savedsearches.json
+        - python3 ./scripts/deploy_to_splunk.py

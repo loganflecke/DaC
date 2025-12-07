@@ -3,6 +3,8 @@
 This repository implements a Detection-as-Code workflow: author Sigma detection rules, convert them to Splunk alert JSON, and programmatically deploy them to Splunk for execution and analysis.
 
 ---
+![Detection_as_Code](./Detection_as_Code.png)
+---
 
 ## Overview
 
